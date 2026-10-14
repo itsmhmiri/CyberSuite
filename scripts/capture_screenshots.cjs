@@ -33,85 +33,84 @@ async function capture() {
       fullPage: false,
     });
 
-    // 2. Click "Runner & Terminal" tab
-    console.log('[*] Navigating to Runner & Terminal tab...');
-    const runnerBtn = await page.evaluateHandle(() => {
-      const buttons = Array.from(document.querySelectorAll('button'));
-      return buttons.find((b) => b.textContent && b.textContent.includes('Runner & Terminal'));
+    // 2. Click "Runner" tab
+    console.log('[*] Navigating to Runner tab...');
+    await page.evaluate(() => {
+      const btn = Array.from(document.querySelectorAll('button')).find((b) => b.textContent && b.textContent.includes('Runner'));
+      if (btn) btn.click();
     });
-    if (runnerBtn) {
-      await runnerBtn.click();
-      await sleep(1500);
+    await sleep(1500);
 
-      // Trigger a run to produce real live ANSI logs
-      console.log('[*] Triggering Execute Tool...');
-      const executeBtn = await page.evaluateHandle(() => {
-        const buttons = Array.from(document.querySelectorAll('button'));
-        return buttons.find((b) => b.textContent && b.textContent.includes('Execute Tool'));
-      });
-      if (executeBtn) {
-        await executeBtn.click();
-        await sleep(3500); // wait for process run and logs to stream in
-      }
-
-      console.log('[+] Capturing 02_runner_terminal.png...');
-      await page.screenshot({
-        path: path.join(OUTPUT_DIR, '02_runner_terminal.png'),
-        fullPage: false,
-      });
-
-      // Switch to Structured Findings tab
-      console.log('[*] Switching to Structured Findings tab...');
-      const findingsTab = await page.evaluateHandle(() => {
-        const buttons = Array.from(document.querySelectorAll('button'));
-        return buttons.find((b) => b.textContent && b.textContent.includes('Structured Findings'));
-      });
-      if (findingsTab) {
-        await findingsTab.click();
-        await sleep(1500);
-        console.log('[+] Capturing 03_structured_findings.png...');
-        await page.screenshot({
-          path: path.join(OUTPUT_DIR, '03_structured_findings.png'),
-          fullPage: false,
-        });
-      }
-    }
-
-    // 3. Click "Tool Manager" tab
-    console.log('[*] Navigating to Tool Manager tab...');
-    const managerBtn = await page.evaluateHandle(() => {
-      const buttons = Array.from(document.querySelectorAll('button'));
-      return buttons.find((b) => b.textContent && b.textContent.includes('Tool Manager'));
+    // Trigger Execute Tool
+    await page.evaluate(() => {
+      const btn = Array.from(document.querySelectorAll('button')).find((b) => b.textContent && b.textContent.includes('Execute Tool'));
+      if (btn) btn.click();
     });
-    if (managerBtn) {
-      await managerBtn.click();
-      await sleep(1500);
+    await sleep(3500);
 
-      console.log('[+] Capturing 04_tool_manager.png...');
-      await page.screenshot({
-        path: path.join(OUTPUT_DIR, '04_tool_manager.png'),
-        fullPage: false,
-      });
-    }
-
-    // 4. Click "Developer Guide" tab
-    console.log('[*] Navigating to Developer Guide tab...');
-    const guideBtn = await page.evaluateHandle(() => {
-      const buttons = Array.from(document.querySelectorAll('button'));
-      return buttons.find((b) => b.textContent && b.textContent.includes('Developer Guide'));
+    console.log('[+] Capturing 02_runner_terminal.png...');
+    await page.screenshot({
+      path: path.join(OUTPUT_DIR, '02_runner_terminal.png'),
+      fullPage: false,
     });
-    if (guideBtn) {
-      await guideBtn.click();
-      await sleep(1500);
 
-      console.log('[+] Capturing 05_developer_guide.png...');
-      await page.screenshot({
-        path: path.join(OUTPUT_DIR, '05_developer_guide.png'),
-        fullPage: false,
-      });
-    }
+    // 3. Click "Pipelines" tab
+    console.log('[*] Navigating to Pipelines tab...');
+    await page.evaluate(() => {
+      const btn = Array.from(document.querySelectorAll('button')).find((b) => b.textContent && b.textContent.includes('Pipelines'));
+      if (btn) btn.click();
+    });
+    await sleep(2000);
 
-    console.log('[✓] All screenshots captured successfully in docs/images!');
+    console.log('[+] Capturing 03_pipelines_builder.png...');
+    await page.screenshot({
+      path: path.join(OUTPUT_DIR, '03_pipelines_builder.png'),
+      fullPage: false,
+    });
+
+    // 4. Click "Targets" tab
+    console.log('[*] Navigating to Targets tab...');
+    await page.evaluate(() => {
+      const btn = Array.from(document.querySelectorAll('button')).find((b) => b.textContent && b.textContent.includes('Targets'));
+      if (btn) btn.click();
+    });
+    await sleep(2000);
+
+    console.log('[+] Capturing 04_targets_assets.png...');
+    await page.screenshot({
+      path: path.join(OUTPUT_DIR, '04_targets_assets.png'),
+      fullPage: false,
+    });
+
+    // 5. Click "Schedules & Diff" tab
+    console.log('[*] Navigating to Schedules & Diff tab...');
+    await page.evaluate(() => {
+      const btn = Array.from(document.querySelectorAll('button')).find((b) => b.textContent && b.textContent.includes('Schedules'));
+      if (btn) btn.click();
+    });
+    await sleep(2000);
+
+    console.log('[+] Capturing 05_schedules_diff.png...');
+    await page.screenshot({
+      path: path.join(OUTPUT_DIR, '05_schedules_diff.png'),
+      fullPage: false,
+    });
+
+    // 6. Open Executive Report Modal
+    console.log('[*] Opening Executive Audit Report...');
+    await page.evaluate(() => {
+      const btn = Array.from(document.querySelectorAll('button')).find((b) => b.textContent && b.textContent.includes('Audit Report'));
+      if (btn) btn.click();
+    });
+    await sleep(1500);
+
+    console.log('[+] Capturing 06_executive_report.png...');
+    await page.screenshot({
+      path: path.join(OUTPUT_DIR, '06_executive_report.png'),
+      fullPage: false,
+    });
+
+    console.log('[✓] All v2.0 screenshots captured successfully in docs/images!');
   } finally {
     await browser.close();
   }

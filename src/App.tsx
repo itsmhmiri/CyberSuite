@@ -5,9 +5,14 @@ import { Navbar, NavTab } from './components/Navbar';
 import { DashboardView } from './components/DashboardView';
 import { ToolCatalogView } from './components/ToolCatalogView';
 import { RunnerView } from './components/RunnerView';
+import { PipelineBuilderView } from './components/PipelineBuilderView';
+import { TargetScopeView } from './components/TargetScopeView';
+import { ScheduleDiffView } from './components/ScheduleDiffView';
 import { TaskQueueView } from './components/TaskQueueView';
 import { ToolManagerView } from './components/ToolManagerView';
 import { DeveloperGuideView } from './components/DeveloperGuideView';
+import { WebhookSettingsModal } from './components/WebhookSettingsModal';
+import { ExecutiveReportModal } from './components/ExecutiveReportModal';
 import { Shield, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
@@ -17,6 +22,11 @@ export default function App() {
   const [selectedToolId, setSelectedToolId] = useState<string>('wordlist-gen');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Modals state
+  const [isWebhookModalOpen, setIsWebhookModalOpen] = useState<boolean>(false);
+  const [isExecutiveReportModalOpen, setIsExecutiveReportModalOpen] = useState<boolean>(false);
+  const [activeAuditTarget, setActiveAuditTarget] = useState<string>('127.0.0.1');
 
   const loadData = async () => {
     try {
@@ -67,6 +77,11 @@ export default function App() {
     setActiveTab('runner');
   };
 
+  const handleAuditTarget = (targetDomain: string) => {
+    setActiveAuditTarget(targetDomain);
+    setActiveTab('pipelines');
+  };
+
   const activeTaskCount = tasks.filter((t) => t.status === 'running').length;
 
   if (loading) {
@@ -89,6 +104,8 @@ export default function App() {
         onSelectTab={setActiveTab}
         activeTaskCount={activeTaskCount}
         totalToolsCount={tools.length}
+        onOpenWebhooks={() => setIsWebhookModalOpen(true)}
+        onOpenExecutiveReport={() => setIsExecutiveReportModalOpen(true)}
       />
 
       {/* Main Workspace Area */}
@@ -135,6 +152,19 @@ export default function App() {
           />
         )}
 
+        {activeTab === 'pipelines' && (
+          <PipelineBuilderView
+            tools={tools}
+            onOpenReport={() => setIsExecutiveReportModalOpen(true)}
+          />
+        )}
+
+        {activeTab === 'targets' && (
+          <TargetScopeView onAuditTarget={handleAuditTarget} />
+        )}
+
+        {activeTab === 'schedules' && <ScheduleDiffView />}
+
         {activeTab === 'tasks' && (
           <TaskQueueView
             tasks={tasks}
@@ -156,16 +186,28 @@ export default function App() {
         {activeTab === 'guide' && <DeveloperGuideView />}
       </main>
 
+      {/* Modals */}
+      <WebhookSettingsModal
+        isOpen={isWebhookModalOpen}
+        onClose={() => setIsWebhookModalOpen(false)}
+      />
+
+      <ExecutiveReportModal
+        isOpen={isExecutiveReportModalOpen}
+        onClose={() => setIsExecutiveReportModalOpen(false)}
+        targetDomain={activeAuditTarget}
+      />
+
       {/* Subtle Footer */}
-      <footer className="border-t border-slate-900 bg-[#070a12] py-4 px-6 text-center text-xs text-slate-400">
+      <footer className="border-t border-slate-900 bg-[#070a12] py-4 px-6 text-center text-xs text-slate-400 mt-12">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-300">CyberSuite</span>
+            <span className="font-semibold text-slate-300">CyberSuite 2.0</span>
             <span aria-hidden="true">·</span>
-            <span>Modular CLI Dashboard for Cybersecurity Professionals</span>
+            <span>Modular DevSecOps Platform & Task Orchestrator</span>
           </div>
           <div className="flex items-center gap-3 font-mono text-[11px] text-slate-400">
-            <span>itsmhmiri tool suite attached</span>
+            <span>itsmhmiri tools connected</span>
             <span aria-hidden="true">·</span>
             <span className="text-cyan-400">CyberTool Spec v1.0</span>
           </div>

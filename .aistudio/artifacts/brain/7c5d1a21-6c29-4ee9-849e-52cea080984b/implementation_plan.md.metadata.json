@@ -1,6 +1,6 @@
 {
-  "summary": "Implementation plan for capturing full-tour screenshots of the live CyberSuite application using Puppeteer and integrating high-resolution visual previews directly into README.md.",
-  "updatedAt": "2026-10-14T15:57:24.954468180Z",
+  "summary": "Comprehensive implementation plan for CyberSuite v2.0 expanding the dashboard into an enterprise DevSecOps platform: Visual Multi-Tool Pipeline Builder with conditional branching, Persistent Target Scope & Asset Inventory, Scheduled Recurring Scans with change diffing alerts, and Multi-Channel Webhooks with Executive HTML/PDF audit reports.",
+  "updatedAt": "2026-10-14T16:19:25.321295442Z",
   "requestFeedback": true,
   "userFacing": true
 }

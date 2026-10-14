@@ -1,32 +1,39 @@
 import React from 'react';
-import { Terminal, Shield, Play, ListOrdered, Wrench, BookOpen, Activity } from 'lucide-react';
+import { Terminal, Shield, Play, ListOrdered, Wrench, BookOpen, Activity, GitBranch, Globe, Clock, Bell, FileText } from 'lucide-react';
 
-export type NavTab = 'dashboard' | 'catalog' | 'runner' | 'tasks' | 'manager' | 'guide';
+export type NavTab = 'dashboard' | 'catalog' | 'runner' | 'pipelines' | 'targets' | 'schedules' | 'tasks' | 'manager' | 'guide';
 
 interface NavbarProps {
   activeTab: NavTab;
   onSelectTab: (tab: NavTab) => void;
   activeTaskCount: number;
   totalToolsCount: number;
+  onOpenWebhooks: () => void;
+  onOpenExecutiveReport: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   onSelectTab,
   activeTaskCount,
+  onOpenWebhooks,
+  onOpenExecutiveReport,
 }) => {
   const navItems: { id: NavTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: <Activity className="w-4 h-4" /> },
-    { id: 'catalog', label: 'Tool Catalog', icon: <Shield className="w-4 h-4" /> },
-    { id: 'runner', label: 'Runner & Terminal', icon: <Terminal className="w-4 h-4" /> },
-    { id: 'tasks', label: 'Task Queue', icon: <ListOrdered className="w-4 h-4" /> },
-    { id: 'manager', label: 'Tool Manager', icon: <Wrench className="w-4 h-4" /> },
-    { id: 'guide', label: 'Developer Guide', icon: <BookOpen className="w-4 h-4" /> },
+    { id: 'dashboard', label: 'Dashboard', icon: <Activity className="w-3.5 h-3.5" /> },
+    { id: 'catalog', label: 'Tools', icon: <Shield className="w-3.5 h-3.5" /> },
+    { id: 'runner', label: 'Runner', icon: <Terminal className="w-3.5 h-3.5" /> },
+    { id: 'pipelines', label: 'Pipelines', icon: <GitBranch className="w-3.5 h-3.5" /> },
+    { id: 'targets', label: 'Targets', icon: <Globe className="w-3.5 h-3.5" /> },
+    { id: 'schedules', label: 'Schedules & Diff', icon: <Clock className="w-3.5 h-3.5" /> },
+    { id: 'tasks', label: 'Queue', icon: <ListOrdered className="w-3.5 h-3.5" /> },
+    { id: 'manager', label: 'Manager', icon: <Wrench className="w-3.5 h-3.5" /> },
+    { id: 'guide', label: 'Docs', icon: <BookOpen className="w-3.5 h-3.5" /> },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0b0f17]/95 backdrop-blur border-b border-slate-800/80 px-6 py-3 transition-colors">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
+    <header className="sticky top-0 z-40 bg-[#0b0f17]/95 backdrop-blur border-b border-slate-800/80 px-4 sm:px-6 py-2.5 transition-colors">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Zone 1: Brand Wordmark */}
         <div className="flex items-center gap-3 shrink-0">
           <button
@@ -40,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="text-base font-bold tracking-tight text-white flex items-center gap-2">
                 <span>CyberSuite</span>
                 <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-800 text-cyan-400 border border-slate-700/60 font-medium">
-                  Modular
+                  2.0
                 </span>
               </div>
             </div>
@@ -48,14 +55,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Zone 2: Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-slate-400">
+        <nav className="hidden lg:flex items-center gap-1 text-xs font-medium text-slate-400 overflow-x-auto">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs transition-colors whitespace-nowrap cursor-pointer ${
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs transition-colors whitespace-nowrap cursor-pointer ${
                   isActive
                     ? 'text-cyan-300 bg-slate-800/90 font-semibold shadow-xs'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
@@ -64,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {item.icon}
                 <span>{item.label}</span>
                 {item.id === 'tasks' && activeTaskCount > 0 && (
-                  <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold animate-pulse">
+                  <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold animate-pulse">
                     {activeTaskCount}
                   </span>
                 )}
@@ -73,14 +80,30 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </nav>
 
-        {/* Zone 3: Primary Quick Action */}
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Zone 3: Quick Action Hub */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={onOpenWebhooks}
+            title="Configure Alert Webhooks"
+            className="p-1.5 rounded border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-400 hover:text-white transition-colors cursor-pointer"
+          >
+            <Bell className="w-3.5 h-3.5" />
+          </button>
+
+          <button
+            onClick={onOpenExecutiveReport}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded transition-colors cursor-pointer border border-slate-700"
+          >
+            <FileText className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Audit Report</span>
+          </button>
+
           <button
             onClick={() => onSelectTab('runner')}
-            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-md transition-all shadow-sm hover:shadow-cyan-500/20 cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded transition-all shadow-sm shadow-cyan-500/20 cursor-pointer whitespace-nowrap"
           >
-            <Play className="w-3.5 h-3.5 fill-current" />
-            <span>Launch Tool</span>
+            <Play className="w-3 h-3 fill-current" />
+            <span>Run Tool</span>
           </button>
         </div>
       </div>

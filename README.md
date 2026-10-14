@@ -1,7 +1,7 @@
 # CyberSuite 🛡️
-> **All-in-One Modular Cybersecurity CLI Dashboard & Task Orchestrator**
+> **All-in-One Modular Cybersecurity Operations Platform & CLI Orchestrator**
 
-CyberSuite is an extensible, high-performance web dashboard that unifies command-line security utilities into a centralized operations console. Built around an open plugin specification, it enables security engineers and penetration testers to configure, execute, monitor, and visualize outputs from any Python CLI tool in real time.
+CyberSuite 2.0 transforms command-line security utilities into an automated DevSecOps platform. Built on an open plugin architecture, it unifies standalone Python CLI tools into automated multi-tool pipelines, manages persistent target scopes and asset inventories, conducts scheduled recurring sweeps with attack surface change diffing, pushes real-time alerts to Discord/Slack/Telegram, and generates executive-ready PDF/HTML audit reports.
 
 ![CyberSuite Operations Console](docs/images/01_dashboard_overview.png)
 
@@ -9,49 +9,57 @@ CyberSuite is an extensible, high-performance web dashboard that unifies command
 
 ## ⚡ Key Features
 
+- **Automated Multi-Tool Pipelines**: Visual workflow orchestrator that chains security tools together with conditional logic (e.g. `async-banner-scanner` &rarr; `quickbuster` &rarr; `wordlist-gen`).
+- **Target Scope & Discovered Asset Ledger**: Persistent target profiles (domains, organizations, CIDRs, exclusions) with an automated ledger of discovered ports, services, and web routes.
+- **Scheduled Audits & Attack Surface Diffing**: Automated recurring sweeps (hourly, daily, weekly) with differential analysis that alerts when new open ports or endpoints appear.
+- **Multi-Channel Webhooks & Executive Reporting**: Real-time alert dispatch to Discord, Slack, and Telegram, with one-click export to printable, executive-ready PDF and HTML security reports.
 - **Decoupled Plugin Architecture (CyberTool Spec v1.0)**: Zero hardcoding. Tools are defined declaratively via `manifest.json`. Adding or extending tools requires no frontend code changes.
-- **One-Click Attach & Detach**: Enable or disable tools in your active workspace with persistent state.
 - **Real-Time Terminal Streaming**: Subprocesses execute with unbuffered standard I/O (`PYTHONUNBUFFERED=1`) and stream live ANSI-colored logs via Server-Sent Events (SSE).
-- **Dynamic Parameter Generator**: Forms (text inputs, sliders, dropdowns, and toggles) are generated automatically from each tool's manifest with live shell command previews.
-- **Structured Findings & Audit Reports**: Automatically extracts machine-readable summaries into interactive UI cards (vulnerabilities, open ports, endpoint statuses, password entropy) with Markdown and JSON export.
-- **Integrated Tool Management**: Built-in visual Tool Builder, GitHub repository importer, and raw JSON manifest validator.
+- **One-Click Attach & Detach**: Enable or disable tools in your active workspace with persistent state.
 
 ---
 
-## 📸 Visual Tour & Application Views
+## 📸 Visual Tour & Application Capabilities
 
 ### 1. Operations Command Center
-The central operational dashboard featuring real-time KPI metrics, execution history, and quick-launch triggers for attached security utilities.
+The central operational dashboard featuring real-time KPI metrics, active background processes, signature tool quick-launch cards, and historical execution logs.
 
 ![Operations Dashboard](docs/images/01_dashboard_overview.png)
 
 ---
 
-### 2. Live Runner & Monospace Streaming Terminal
-Dynamic schema-driven argument configuration on the left with instant command string generation, paired with a dark ANSI-colored terminal streaming process logs in real time.
+### 2. Multi-Tool Workflow Pipelines (Chaining & Branching)
+Visual pipeline canvas enabling security engineers to chain tools sequentially with conditional filters (e.g. only run directory fuzzing if web ports 80/443/8080 are detected open).
+
+![Pipelines Builder](docs/images/03_pipelines_builder.png)
+
+---
+
+### 3. Target Scope & Discovered Asset Ledger
+Manage client organizations, approved CIDR ranges, and out-of-scope exclusions while maintaining an auto-populated attack surface ledger of discovered open ports, services, and endpoints.
+
+![Target Scope & Assets](docs/images/04_targets_assets.png)
+
+---
+
+### 4. Scheduled Audits & Attack Surface Change Diffing
+Automated recurring sweeps that compare findings against historical baselines, immediately flagging newly opened ports, new web endpoints, or remediated vectors.
+
+![Schedules & Attack Surface Diff](docs/images/05_schedules_diff.png)
+
+---
+
+### 5. Live Runner & Monospace Streaming Terminal
+Dynamic schema-driven argument configuration on the left with live shell command construction, paired with a dark ANSI-colored terminal streaming process logs in real time.
 
 ![Runner Console & Streaming Terminal](docs/images/02_runner_terminal.png)
 
 ---
 
-### 3. Structured Intelligence & Findings
-Machine-readable extraction converting raw CLI logs into actionable finding tables, port/banner inventories, route status code badges, and entropy calculations.
+### 6. Executive Security Audit Reports (Printable PDF / HTML)
+Generate branded, printable audit deliverables featuring executive risk summaries, CVSS/severity matrices, discovered attack surface tables, and OWASP hardening recommendations.
 
-![Structured Findings & Analytics](docs/images/03_structured_findings.png)
-
----
-
-### 4. Tool Management & Visual Builder Hub
-Comprehensive inventory of all connected tools with 1-click **Attach / Detach** toggles, GitHub repository scaffolding, and an in-app visual manifest authoring wizard.
-
-![Tool Manager & Integrations](docs/images/04_tool_manager.png)
-
----
-
-### 5. Interactive Developer Guide & Live Schema Validator
-Built-in operator manuals, Python boilerplate starter templates, and a real-time JSON manifest validator with live component preview.
-
-![Developer Guide & Validator](docs/images/05_developer_guide.png)
+![Executive Audit Report](docs/images/06_executive_report.png)
 
 ---
 
@@ -169,25 +177,32 @@ Alternatively, use the in-app **Interactive Tool Builder** under the **Tool Mana
 
 ```
 ├── docs/
-│   └── images/              # High-resolution application screenshots
+│   └── images/                 # High-resolution screenshots of all views
 ├── server/
-│   └── apiPlugin.ts         # Vite execution middleware, process spawner, & SSE streamer
+│   ├── apiPlugin.ts            # Vite execution middleware, process spawner, & SSE streamer
+│   └── extendedModules.ts      # Pipelines engine, target scopes, schedules, & webhooks
 ├── src/
 │   ├── components/
-│   │   ├── DashboardView.tsx       # Operations metrics & signature tool highlights
-│   │   ├── ToolCatalogView.tsx     # Filterable inventory with attach/detach controls
-│   │   ├── RunnerView.tsx          # Dynamic parameter form & live ANSI terminal
-│   │   ├── TaskQueueView.tsx       # Active background jobs & kill switches
-│   │   ├── ToolManagerView.tsx     # Attach/detach manager & visual tool builder
-│   │   └── DeveloperGuideView.tsx  # In-app CyberTool specification & live validator
-│   ├── types/tool.ts               # Core TypeScript schemas
-│   └── utils/                      # ANSI decoder & REST/SSE API client
-├── tools/                          # Plug-and-play Python security tools
+│   │   ├── DashboardView.tsx          # Operations metrics & signature tool highlights
+│   │   ├── PipelineBuilderView.tsx    # Multi-tool workflow orchestrator & execution
+│   │   ├── TargetScopeView.tsx        # Persistent target profiles & discovered asset ledger
+│   │   ├── ScheduleDiffView.tsx       # Automated recurring sweeps & attack surface diffs
+│   │   ├── RunnerView.tsx             # Dynamic parameter form & live ANSI terminal
+│   │   ├── TaskQueueView.tsx          # Active background jobs & kill switches
+│   │   ├── ToolManagerView.tsx        # Attach/detach manager & visual tool builder
+│   │   ├── DeveloperGuideView.tsx     # In-app CyberTool specification & live validator
+│   │   ├── WebhookSettingsModal.tsx   # Discord, Slack, and Telegram alert configuration
+│   │   └── ExecutiveReportModal.tsx   # Printable executive PDF/HTML report preview
+│   ├── types/
+│   │   ├── tool.ts                    # Core CyberTool schemas
+│   │   └── pipeline.ts                # Pipeline, target, schedule, and webhook models
+│   └── utils/                         # ANSI decoder & REST/SSE API client
+├── tools/                             # Plug-and-play Python security tools
 │   ├── wordlist_gen/
 │   ├── quickbuster/
 │   ├── async_banner_scanner/
 │   └── http_header_auditor/
-└── wordlists/                      # Built-in fuzzing dictionaries
+└── wordlists/                         # Built-in fuzzing dictionaries
 ```
 
 ---

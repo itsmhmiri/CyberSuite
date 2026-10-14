@@ -4,6 +4,7 @@ import { spawn, ChildProcess } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { ToolDefinition, TaskExecution } from '../src/types/tool';
+import { setupExtendedRoutes } from './extendedModules';
 
 const DATA_DIR = path.resolve(process.cwd(), 'data');
 const TOOLS_DIR = path.resolve(process.cwd(), 'tools');
@@ -506,6 +507,9 @@ export function cyberSuiteBackendPlugin(): Plugin {
           res.status(500).json({ success: false, error: err.message });
         }
       });
+
+      // Mount extended modules (Pipelines, Targets, Schedules, Webhooks)
+      setupExtendedRoutes(app);
 
       // Attach backend Express app to Vite dev server middlewares
       server.middlewares.use(app);
