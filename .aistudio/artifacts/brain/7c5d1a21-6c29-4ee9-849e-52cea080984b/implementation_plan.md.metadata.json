@@ -1,6 +1,6 @@
 {
-  "summary": "Revised implementation plan incorporating the user's modular tool architecture, default integration of their 3 GitHub security tools (wordlist-gen, quickbuster, async-banner-scanner), attach/detach tool management hub, and a comprehensive in-app Developer & User Guide for writing and managing custom security tools.",
-  "updatedAt": "2026-10-14T06:32:55.996233101Z",
+  "summary": "Implementation plan for capturing full-tour screenshots of the live CyberSuite application using Puppeteer and integrating high-resolution visual previews directly into README.md.",
+  "updatedAt": "2026-10-14T15:57:24.954468180Z",
   "requestFeedback": true,
   "userFacing": true
 }

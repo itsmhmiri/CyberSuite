@@ -3,6 +3,8 @@
 
 CyberSuite is an extensible, high-performance web dashboard that unifies command-line security utilities into a centralized operations console. Built around an open plugin specification, it enables security engineers and penetration testers to configure, execute, monitor, and visualize outputs from any Python CLI tool in real time.
 
+![CyberSuite Operations Console](docs/images/01_dashboard_overview.png)
+
 ---
 
 ## ⚡ Key Features
@@ -13,6 +15,43 @@ CyberSuite is an extensible, high-performance web dashboard that unifies command
 - **Dynamic Parameter Generator**: Forms (text inputs, sliders, dropdowns, and toggles) are generated automatically from each tool's manifest with live shell command previews.
 - **Structured Findings & Audit Reports**: Automatically extracts machine-readable summaries into interactive UI cards (vulnerabilities, open ports, endpoint statuses, password entropy) with Markdown and JSON export.
 - **Integrated Tool Management**: Built-in visual Tool Builder, GitHub repository importer, and raw JSON manifest validator.
+
+---
+
+## 📸 Visual Tour & Application Views
+
+### 1. Operations Command Center
+The central operational dashboard featuring real-time KPI metrics, execution history, and quick-launch triggers for attached security utilities.
+
+![Operations Dashboard](docs/images/01_dashboard_overview.png)
+
+---
+
+### 2. Live Runner & Monospace Streaming Terminal
+Dynamic schema-driven argument configuration on the left with instant command string generation, paired with a dark ANSI-colored terminal streaming process logs in real time.
+
+![Runner Console & Streaming Terminal](docs/images/02_runner_terminal.png)
+
+---
+
+### 3. Structured Intelligence & Findings
+Machine-readable extraction converting raw CLI logs into actionable finding tables, port/banner inventories, route status code badges, and entropy calculations.
+
+![Structured Findings & Analytics](docs/images/03_structured_findings.png)
+
+---
+
+### 4. Tool Management & Visual Builder Hub
+Comprehensive inventory of all connected tools with 1-click **Attach / Detach** toggles, GitHub repository scaffolding, and an in-app visual manifest authoring wizard.
+
+![Tool Manager & Integrations](docs/images/04_tool_manager.png)
+
+---
+
+### 5. Interactive Developer Guide & Live Schema Validator
+Built-in operator manuals, Python boilerplate starter templates, and a real-time JSON manifest validator with live component preview.
+
+![Developer Guide & Validator](docs/images/05_developer_guide.png)
 
 ---
 
@@ -129,6 +168,8 @@ Alternatively, use the in-app **Interactive Tool Builder** under the **Tool Mana
 ## 📁 Project Architecture
 
 ```
+├── docs/
+│   └── images/              # High-resolution application screenshots
 ├── server/
 │   └── apiPlugin.ts         # Vite execution middleware, process spawner, & SSE streamer
 ├── src/
