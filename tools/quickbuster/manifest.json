@@ -1,0 +1,84 @@
+{
+  "$schema": "cybertool-v1",
+  "id": "quickbuster",
+  "name": "QuickBuster (Async Directory & Endpoint Fuzzer)",
+  "version": "1.2.0",
+  "author": "itsmhmiri",
+  "githubUrl": "https://github.com/itsmhmiri/quickbuster",
+  "category": "web",
+  "tags": ["fuzzing", "directory-bruteforce", "endpoints", "asyncio", "smart-calibration"],
+  "description": "High-speed asynchronous HTTP directory and endpoint discovery tool with smart 404 calibration that eliminates wildcard false positives.",
+  "entrypoint": "tools/quickbuster/main.py",
+  "attached": true,
+  "parameters": [
+    {
+      "name": "url",
+      "flag": "-u",
+      "type": "string",
+      "label": "Target Base URL",
+      "placeholder": "https://example.com or http://localhost:3000",
+      "defaultValue": "https://httpbin.org",
+      "required": true,
+      "description": "Base HTTP/HTTPS URL of the target web application"
+    },
+    {
+      "name": "wordlist",
+      "flag": "-w",
+      "type": "select",
+      "label": "Wordlist Preset",
+      "options": ["wordlists/common_endpoints.txt", "wordlists/api_routes.txt", "wordlists/sensitive_files.txt"],
+      "defaultValue": "wordlists/common_endpoints.txt",
+      "description": "Wordlist file containing endpoints and route paths"
+    },
+    {
+      "name": "concurrency",
+      "flag": "-c",
+      "type": "number",
+      "label": "Concurrency Limit",
+      "defaultValue": 20,
+      "min": 1,
+      "max": 100,
+      "description": "Max simultaneous asynchronous requests"
+    },
+    {
+      "name": "timeout",
+      "flag": "-t",
+      "type": "number",
+      "label": "Request Timeout (sec)",
+      "defaultValue": 5,
+      "min": 1,
+      "max": 30,
+      "description": "Timeout threshold per HTTP request"
+    },
+    {
+      "name": "calibrate",
+      "flag": "--calibrate",
+      "type": "boolean",
+      "label": "Smart 404 Calibration",
+      "defaultValue": true,
+      "description": "Send probe requests to fingerprint custom or wildcard 404 pages"
+    },
+    {
+      "name": "extensions",
+      "flag": "-x",
+      "type": "string",
+      "label": "Extensions (optional)",
+      "placeholder": "e.g. php,json,html,bak",
+      "defaultValue": "",
+      "required": false,
+      "description": "Comma-separated extensions to append to path probes"
+    },
+    {
+      "name": "status_codes",
+      "flag": "-s",
+      "type": "string",
+      "label": "Status Codes to Report",
+      "defaultValue": "200,204,301,302,307,401,403,405",
+      "description": "Comma-separated HTTP status codes to consider valid findings"
+    }
+  ],
+  "outputParser": {
+    "type": "endpoint_findings",
+    "summaryMetric": "endpoints_found"
+  }
+}

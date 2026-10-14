@@ -1,0 +1,102 @@
+{
+  "$schema": "cybertool-v1",
+  "id": "wordlist-gen",
+  "name": "WordListGen (Targeted OSINT Dictionary)",
+  "version": "1.4.0",
+  "author": "itsmhmiri",
+  "githubUrl": "https://github.com/itsmhmiri/wordlist-gen",
+  "category": "recon",
+  "tags": ["osint", "passwords", "dictionary", "social-engineering"],
+  "description": "Smart, fast CLI tool that builds targeted password wordlists from OSINT info by modeling how humans create passwords with names, years, seasons, and leetspeak.",
+  "entrypoint": "tools/wordlist_gen/main.py",
+  "attached": true,
+  "parameters": [
+    {
+      "name": "names",
+      "flag": "--names",
+      "type": "string",
+      "label": "Names / Usernames",
+      "placeholder": "e.g. John, Alice, Smith",
+      "required": true,
+      "description": "Comma-separated target person, user, or project names"
+    },
+    {
+      "name": "company",
+      "flag": "--company",
+      "type": "string",
+      "label": "Company / Organization",
+      "placeholder": "e.g. AcmeCorp, CyberLab",
+      "defaultValue": "",
+      "required": false,
+      "description": "Target company, brand, or workplace name"
+    },
+    {
+      "name": "keywords",
+      "flag": "--keywords",
+      "type": "string",
+      "label": "Keywords (Pets, Hobbies, Cities)",
+      "placeholder": "e.g. Fluffy, Paris, Tesla",
+      "defaultValue": "",
+      "required": false,
+      "description": "Additional OSINT keywords"
+    },
+    {
+      "name": "years",
+      "flag": "--years",
+      "type": "string",
+      "label": "Years to Append",
+      "placeholder": "2020-2026 or 2024,2025",
+      "defaultValue": "2022-2026",
+      "required": false,
+      "description": "Range or list of years to combine"
+    },
+    {
+      "name": "seasons",
+      "flag": "--seasons",
+      "type": "boolean",
+      "label": "Include Seasons (Spring, Summer, etc.)",
+      "defaultValue": true,
+      "description": "Include seasonal base words (e.g. Summer2024!)"
+    },
+    {
+      "name": "leet",
+      "flag": "--leet",
+      "type": "boolean",
+      "label": "Apply Leetspeak Substitutions",
+      "defaultValue": true,
+      "description": "Generate variations with a->@, o->0, e->3, s->$"
+    },
+    {
+      "name": "specials",
+      "flag": "--specials",
+      "type": "boolean",
+      "label": "Append Special Characters (!, @, #, etc.)",
+      "defaultValue": true,
+      "description": "Append common trailing special characters"
+    },
+    {
+      "name": "min_length",
+      "flag": "--min-len",
+      "type": "number",
+      "label": "Minimum Length",
+      "defaultValue": 8,
+      "min": 4,
+      "max": 32,
+      "description": "Enforce minimum password length"
+    },
+    {
+      "name": "max_length",
+      "flag": "--max-len",
+      "type": "number",
+      "label": "Maximum Length",
+      "defaultValue": 18,
+      "min": 6,
+      "max": 64,
+      "description": "Enforce maximum password length"
+    }
+  ],
+  "outputParser": {
+    "type": "wordlist",
+    "summaryMetric": "words_generated"
+  }
+}

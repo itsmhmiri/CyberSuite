@@ -1,0 +1,46 @@
+{
+  "$schema": "cybertool-v1",
+  "id": "http-header-auditor",
+  "name": "HTTP Security Headers & SSL Auditor",
+  "version": "1.1.0",
+  "author": "CyberSuite Community",
+  "category": "web",
+  "tags": ["owasp", "headers", "hsts", "csp", "ssl", "compliance"],
+  "description": "Inspects target web servers for critical OWASP security headers, evaluates Content-Security-Policy and HSTS directives, and scores security posture.",
+  "entrypoint": "tools/http_header_auditor/main.py",
+  "attached": true,
+  "parameters": [
+    {
+      "name": "url",
+      "flag": "-u",
+      "type": "string",
+      "label": "Target URL",
+      "placeholder": "https://example.com",
+      "defaultValue": "https://httpbin.org",
+      "required": true,
+      "description": "Target web application URL to audit"
+    },
+    {
+      "name": "follow_redirects",
+      "flag": "--follow-redirects",
+      "type": "boolean",
+      "label": "Follow HTTP Redirects",
+      "defaultValue": true,
+      "description": "Follow HTTP 301/302 redirects to audit the final destination"
+    },
+    {
+      "name": "timeout",
+      "flag": "-t",
+      "type": "number",
+      "label": "Timeout (sec)",
+      "defaultValue": 8,
+      "min": 2,
+      "max": 30,
+      "description": "Connection timeout in seconds"
+    }
+  ],
+  "outputParser": {
+    "type": "header_audit",
+    "summaryMetric": "security_grade"
+  }
+}

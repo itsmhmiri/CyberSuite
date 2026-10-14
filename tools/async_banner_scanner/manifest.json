@@ -1,0 +1,68 @@
+{
+  "$schema": "cybertool-v1",
+  "id": "async-banner-scanner",
+  "name": "Async Banner Scanner (TCP Port & Service Prober)",
+  "version": "1.3.0",
+  "author": "itsmhmiri",
+  "githubUrl": "https://github.com/itsmhmiri/async-banner-scanner",
+  "category": "network",
+  "tags": ["port-scanner", "banner-grabbing", "asyncio", "service-discovery", "fingerprinting"],
+  "description": "Fast and lightweight asynchronous TCP port scanner and service banner grabber using Python native asyncio.",
+  "entrypoint": "tools/async_banner_scanner/main.py",
+  "attached": true,
+  "parameters": [
+    {
+      "name": "target",
+      "flag": "-t",
+      "type": "string",
+      "label": "Target Host / IP",
+      "placeholder": "scanme.nmap.org or 127.0.0.1",
+      "defaultValue": "127.0.0.1",
+      "required": true,
+      "description": "Hostname, IPv4 address, or domain to scan"
+    },
+    {
+      "name": "ports",
+      "flag": "-p",
+      "type": "string",
+      "label": "Ports or Range",
+      "placeholder": "21,22,80,443,3000,8080 or 1-1000",
+      "defaultValue": "21,22,25,53,80,110,143,443,3000,3306,5432,6379,8000,8080,8443,9000",
+      "required": true,
+      "description": "Comma-separated port numbers or range (e.g. 1-1024 or top common ports)"
+    },
+    {
+      "name": "concurrency",
+      "flag": "-c",
+      "type": "number",
+      "label": "Concurrency Limit",
+      "defaultValue": 40,
+      "min": 1,
+      "max": 200,
+      "description": "Number of parallel asynchronous sockets"
+    },
+    {
+      "name": "timeout",
+      "flag": "--timeout",
+      "type": "number",
+      "label": "Connection Timeout (sec)",
+      "defaultValue": 1.5,
+      "min": 0.2,
+      "max": 10.0,
+      "step": 0.1,
+      "description": "TCP connect timeout per port"
+    },
+    {
+      "name": "grab_banner",
+      "flag": "--grab-banner",
+      "type": "boolean",
+      "label": "Grab Service Banners",
+      "defaultValue": true,
+      "description": "Send discovery probe and inspect response header/banner"
+    }
+  ],
+  "outputParser": {
+    "type": "port_findings",
+    "summaryMetric": "open_ports_count"
+  }
+}

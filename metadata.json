@@ -1,0 +1,6 @@
+{
+  "name": "CyberSuite - Modular Security CLI Dashboard",
+  "description": "All-in-One modular cybersecurity CLI dashboard and task orchestrator to manage, execute, and extend custom Python tools with real-time terminal streaming and structured findings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
